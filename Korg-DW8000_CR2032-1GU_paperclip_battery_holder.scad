@@ -98,24 +98,32 @@ union() {
         // pin holes (paperclips?)
         {
             // pin 1 (pos)
-            translate([x_lead_pos_pin1, y_lead_pos_pin1, 0])
-                soldered_lead_hole(height = 12, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad);
+            translate([x_lead_pos_pin1, y_lead_pos_pin1, 0]) {
+                soldered_lead_hole(height = h_holder_base + d_lead + h_coincell + h_holder_clip, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad);
+                translate([0, 0, h_holder_base + h_coincell + h_holder_clip + 1 * (d_lead / 3)])
+                    rotate([-22, 90, 180])
+                        cylinder(h = 2, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
+            }
             // pin 2 (pos)
-            translate([x_lead_pos_pin2, y_lead_pos_pin2, 0])
-                soldered_lead_hole(height = 12, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad);
+            translate([x_lead_pos_pin2, y_lead_pos_pin2, 0]) {
+                soldered_lead_hole(height = h_holder_base + d_lead + h_coincell + h_holder_clip, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad);
+                translate([0, 0, h_holder_base + h_coincell + h_holder_clip + 1 * (d_lead / 3)])
+                    rotate([22, 90, 180])
+                        cylinder(h = 2, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
+            }
             // pin 3 (neg)
             translate([x_lead_neg_pin, y_lead_neg_pin, 0])
                 soldered_lead_hole(height = h_holder_base + d_lead  + d_hole_tol + 2, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad);
             // horizontal negative contact
-            translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - (d_lead / 3)])
+            translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - (d_lead / 2)])
                 rotate([0, 90, 0])
                     cylinder(h = d_coincell + 6, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
-            translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - 2 * (d_lead / 3)])
+            translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - 2 * (d_lead / 2)])
                 rotate([0, 90, 0])
-                    cylinder(h = 3, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
-            translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - 3 * (d_lead / 3)])
+                    cylinder(h = 6, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
+            translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - 3 * (d_lead / 2)])
                 rotate([0, 90, 0])
-                    cylinder(h = 1, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
+                    cylinder(h = 2, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
         }
     }
 }
@@ -126,7 +134,8 @@ union() {
 }
 
 module soldered_lead_hole(height, diameter, d_padsize) {
-    cylinder(h = height, d1 = diameter, d2 = diameter, center = true);
+    translate([0, 0, height / 2])
+        cylinder(h = height, d1 = diameter, d2 = diameter, center = true);
     // leave a clearance dome over solder pad
     translate([0, 0, -0.1])
         cylinder(h = diameter + 0.1, d1 = d_padsize * 1.25, d2 = diameter);
