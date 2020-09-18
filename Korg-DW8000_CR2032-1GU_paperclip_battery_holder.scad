@@ -26,12 +26,12 @@ x_lead_pos_pin2 = x_lead_pos_pin1;
 x_lead_neg_pin = x_lead_pos_pin1 - 17.8;
 a_pos_pin = atan((y_lead_pos_pin1 - d_lead ) / (x_lead_pos_pin1 - d_lead / 2));
 
-h_holder_base = 0.8;
+h_holder_base = 1.2;
 w_holder_walls = 2.5;
 d_holder = d_coincell + d_coincell_tol + 2 * w_holder_walls;
 a_holder_clip = 22; // angle of width of holder vertical flex tabs
-h_holder_clip = 1; // height of clip overhang
-w_holder_clip = 0.5; // extent of clip overhang
+h_holder_clip = 2; // height of clip overhang
+w_holder_clip = 1; // extent of clip overhang
 //w_holder_sweep = (sin(a_holder_clip) * ((d_coincell / 2) + d_coincell_tol + w_holder_walls)) / 2; // 
 w_holder_sweep = w_holder_walls;
 union() {
@@ -98,34 +98,44 @@ union() {
         // pin holes (paperclips?)
         {
             // pin 1 (pos)
-            translate([x_lead_pos_pin1, y_lead_pos_pin1, 0]) {
-                soldered_lead_hole(height = h_holder_base + d_lead + h_coincell + h_holder_clip, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad);
-                translate([0, 0, h_holder_base + h_coincell + h_holder_clip + 1 * (d_lead / 3)])
-                    rotate([-22, 90, 180])
-                        translate([0, 0, 0])
-                            cube([d_lead + d_hole_tol, d_lead + d_hole_tol + 0.1, 3], center = true);
+            translate([x_lead_pos_pin1, y_lead_pos_pin1, -0.2]) {
+                rotate([0, -8, 22]) {
+                    soldered_lead_hole(height = h_holder_base + d_lead + h_coincell + h_holder_clip, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad);
+                    translate([0, 0, h_holder_base + h_coincell + h_holder_clip + 1 * (d_lead / 3)])
+                        rotate([0, 90, 180])
+                            translate([1.5, 0, 0])
+                                cube([d_lead + d_hole_tol, d_lead + d_hole_tol + 0.1, 3], center = true);
+                }
             }
             // pin 2 (pos)
-            translate([x_lead_pos_pin2, y_lead_pos_pin2, 0]) {
-                soldered_lead_hole(height = h_holder_base + d_lead + h_coincell + h_holder_clip, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad);
-                translate([0, 0, h_holder_base + h_coincell + h_holder_clip + 1 * (d_lead / 3)])
-                    rotate([22, 90, 180])
-                        translate([0, 0, 0])
-                                cube([d_lead + d_hole_tol, d_lead + d_hole_tol + 0.1, 3], center = true);
+            translate([x_lead_pos_pin2, y_lead_pos_pin2, -0.2]) {
+                rotate([0, -8, -22]) {
+                    soldered_lead_hole(height = h_holder_base + d_lead + h_coincell + h_holder_clip, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad);
+                    translate([0, 0, h_holder_base + h_coincell + h_holder_clip + 1 * (d_lead / 3)])
+                        rotate([0, 90, 180])
+                            translate([1.5, 0, 0])
+                                    cube([d_lead + d_hole_tol, d_lead + d_hole_tol + 0.1, 3], center = true);
+                }
             }
+
+            rotate([0, -8, 0])
+                translate([x_lead_pos_pin2, y_lead_pos_pin2, h_holder_base + h_coincell - 1.1]) {
+                    rotate([-90, 0, 0])
+                        cylinder(h = y_lead_pos_pin1 - y_lead_pos_pin2, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
+                }
             // pin 3 (neg)
             translate([x_lead_neg_pin, y_lead_neg_pin, 0])
                 soldered_lead_hole(height = h_holder_base + d_lead  + d_hole_tol + 2, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad);
             // horizontal negative contact
             translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - (d_lead / 2)])
-                rotate([0, 90, 0])
+                rotate([0, 93.5, 0])
                     cylinder(h = d_coincell + 6, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
             translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - 3 * (d_lead / 2)])
                 rotate([0, 84.5, 0])
                     cylinder(h = d_coincell / 2, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
-            *translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - 3 * (d_lead / 2)])
+            translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol])
                 rotate([0, 90, 0])
-                    cylinder(h = 2, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
+                    cylinder(h = d_coincell / 2, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
         }
     }
 }
