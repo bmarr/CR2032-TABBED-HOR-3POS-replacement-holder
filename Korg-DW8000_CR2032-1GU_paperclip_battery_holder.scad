@@ -63,6 +63,17 @@ union() {
                                         square([d_lead, h_coincell]);
                             }
                     
+                    // pin vertical guide (pos)
+                    rotate([0, a_pos_pin_lean, 0]) {
+                        translate([x_lead_pos_pin2, 0, h_holder_base -0.1]) {
+                                hull() {
+                                    cube([d_lead + d_hole_tol, y_lead_pos_pin1 - y_lead_pos_pin2, h_holder_base + h_coincell + (d_lead + d_hole_tol)], center = true);
+                                    translate([0, 0, h_holder_base + d_lead + d_hole_tol + (d_lead + d_hole_tol) / 2])
+                                        rotate([90, 0, 0])
+                                            cylinder(h = y_lead_pos_pin1 - y_lead_pos_pin2, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = true);
+                                }
+                            }
+                    }
                 }
                 // positive lead retainer
                 union() {
@@ -79,6 +90,14 @@ union() {
                                     polygon(points = [[0, 0], [0, h_holder_clip + 0.3], [2, 0]]);
                             }
                     }
+                }
+                // positive wire lock tab
+                translate([0, 0, h_holder_base + d_lead + d_hole_tol]) {
+                    rotate(a = -(a_holder_clip / 2), v = [0, 0, 1])
+                        rotate_extrude(angle = a_holder_clip, convexity = 10) {
+                            translate([d_coincell / 2 + (d_coincell_tol / 2) + d_lead - 0.01, 0, 0])
+                                polygon(points = [[0, 0], [0, h_holder_clip], [-d_lead - 0.2, h_holder_clip]]);
+                        }
                 }
             }
 
@@ -136,23 +155,7 @@ union() {
                                     cube([d_lead + d_hole_tol, d_lead + d_hole_tol + 0.01, 3], center = true);
                 }
             }
-            // pin vertical guide (pos)
-            rotate([0, a_pos_pin_lean, 0]) {
-                translate([x_lead_pos_pin2, 0, h_holder_base -0.1]) {
-                        hull() {
-                            cube([d_lead + d_hole_tol, y_lead_pos_pin1 - y_lead_pos_pin2, h_holder_base + h_coincell + (d_lead + d_hole_tol)], center = true);
-                            translate([0, 0, h_holder_base + d_lead + d_hole_tol + (d_lead + d_hole_tol) / 2])
-                                rotate([90, 0, 0])
-                                    cylinder(h = y_lead_pos_pin1 - y_lead_pos_pin2, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = true);
-                        }
-                    }
-            }
-            *rotate([0, a_pos_pin_lean, 0])
-                translate([x_lead_pos_pin2, y_lead_pos_pin2, h_holder_base + h_coincell - 1.1]) {
-                    rotate([-90, 0, 0])
-                        cylinder(h = y_lead_pos_pin1 - y_lead_pos_pin2, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
-                }
-            // pin 3 (neg)
+            // pin 3 (neg) - horizontal channel
             translate([x_lead_neg_pin, y_lead_neg_pin, 0])
                 soldered_lead_hole(height = h_holder_base + d_lead  + d_hole_tol + 2, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad);
             // horizontal negative contact restraining sleeve
@@ -160,10 +163,10 @@ union() {
                 rotate([0, 93.5, 0])
                     cylinder(h = d_coincell + 6, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
             translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - 2 * (d_lead / 2)])
-                rotate([0, 81, 0])
+                rotate([0, 79, 0])
                     cylinder(h = d_coincell / 2, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
             // cleanup access to battery NEG pad
-            translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol])
+            translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - 0.2])
                 rotate([0, 90, 0])
                     cylinder(h = d_coincell / 2 + 3, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
             // cut a slip channel into fingernail end for pre-soldered NEG wire to glide through.
