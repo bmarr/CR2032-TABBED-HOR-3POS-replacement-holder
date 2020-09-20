@@ -225,6 +225,19 @@ union() {
                 rotate([0, 0, 180])
                     cube([x_lead_neg_pin + (d_holder / 2) + 0.1, d_lead + d_hole_tol, h_holder_base + d_lead + d_hole_tol + 0.02], center = false );
             }
+
+            // Korg DM8000 fitment customization (deleting parts of body to fit better)
+            //  Make room for capacitor C97
+            translate([0, 0, -0.01])
+                rotate(a = -(a_holder_clip * 3)/2, v = [0, 0, 1])
+                    rotate_extrude(angle = a_holder_clip * 3, convexity = 10) {
+                        translate([-(d_holder / 2)- 0.01, 0, -0.01])
+                            square([w_holder_walls + 0.02, h_holder_base + d_lead + 0.03]);
+                    }
+            // Make room for R99
+            translate([7.5, 8.3, -0.01])
+                cube([7.8, 2, h_holder_base + d_lead + (d_hole_tol / 2) + h_coincell], center = false);
+
         }
     }
 }
