@@ -23,7 +23,7 @@ y_lead_pos_pin2 = -y_lead_pos_pin1;
 y_lead_neg_pin = y_lead_pos_pin1 - 5.08;
 x_lead_pos_pin1 = d_coincell / 2 + 0.35;
 x_lead_pos_pin2 = x_lead_pos_pin1;
-x_lead_neg_pin = x_lead_pos_pin1 - 17.8;
+x_lead_neg_pin = x_lead_pos_pin1 - 16; // was 17.8, but then I measured the actual battery!
 a_pos_pin = atan((y_lead_pos_pin1 - d_lead ) / (x_lead_pos_pin1 - d_lead / 2));
 a_pos_pin_range = atan((y_lead_pos_pin1 + (d_lead / 2)) / (x_lead_pos_pin1 - d_lead / 2));
 a_pos_pin_lean = -8;
@@ -221,9 +221,9 @@ union() {
                 rotate([0, 90, 0])
                     cylinder(h = d_coincell / 2 + 4, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
             // cut a slip channel into fingernail end for pre-soldered NEG wire to glide through.
-            translate([x_lead_neg_pin - (d_holder / 4), y_lead_neg_pin - (d_lead + d_hole_tol) / 2, -0.01]) {
-                rotate([0, 0, 0])
-                    cube([d_holder / 4, d_lead + d_hole_tol, h_holder_base + d_lead + d_hole_tol + 0.02], center = false );
+            translate([x_lead_neg_pin, y_lead_neg_pin + (d_lead + d_hole_tol) / 2, -0.01]) {
+                rotate([0, 0, 180])
+                    cube([x_lead_neg_pin + (d_holder / 2) + 0.1, d_lead + d_hole_tol, h_holder_base + d_lead + d_hole_tol + 0.02], center = false );
             }
         }
     }
