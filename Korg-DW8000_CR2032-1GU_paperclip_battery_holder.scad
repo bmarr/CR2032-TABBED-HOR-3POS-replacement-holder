@@ -14,7 +14,7 @@ d_min_hole_size = 0.7 + 0.25; // 0.7 from 1GU datasheet + IPC-2222 level A
 d_min_annular_ring = 0.05; // 0.05mm
 d_min_fab_allow = 0.6; // 0.6mm IPC-2222 level A
 d_solder_pad = d_min_hole_size + d_min_annular_ring * 2 + d_min_fab_allow;
-d_lead = 0.95; // 0.4 - 0.7mm for 1GU cell, paperclip = thicker? :)
+d_lead = 0.88; // 0.4 - 0.7mm for 1GU cell, paperclip = thicker? :)
 d_hole_tol = 0.4; // FDM nozzle tolerance for small holes (for paperclips)
 
 r_lead_pos_pin = 10.35;
@@ -181,6 +181,7 @@ union() {
                                 polygon(points = [[0, 0], [0, h_holder_clip], [-d_lead - 0.2, h_holder_clip]]);
                         }
                 }
+
             }
 
         }
@@ -211,7 +212,7 @@ union() {
                 soldered_lead_hole(height = h_holder_base + d_lead  + d_hole_tol + 2, diameter = d_lead + d_hole_tol, d_padsize = d_solder_pad * 1.5);
             // horizontal negative contact restraining sleeve
             translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol + (d_lead / 1)])
-                rotate([0, 98, 0])
+                rotate([0, 99, 0])
                     cylinder(h = d_coincell + 6, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
             translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - 2 * (d_lead / 2)])
                 rotate([0, 83, 0])
@@ -219,7 +220,7 @@ union() {
             // cleanup access to battery NEG pad
             translate([x_lead_neg_pin, y_lead_neg_pin, h_holder_base + d_lead + d_hole_tol - 0.2])
                 rotate([0, 90, 0])
-                    cylinder(h = d_coincell / 2 + 4, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
+                    cylinder(h = d_coincell / 2 + 3, d1 = d_lead + d_hole_tol, d2 = d_lead + d_hole_tol, center = false);
             // cut a slip channel into fingernail end for pre-soldered NEG wire to glide through.
             translate([x_lead_neg_pin, y_lead_neg_pin + (d_lead + d_hole_tol) / 2, -0.01]) {
                 rotate([0, 0, 180])
@@ -227,7 +228,7 @@ union() {
             }
 
             // Korg DM8000 fitment customization (deleting parts of body to fit better)
-            //  Make room for capacitor C97
+            //  Make room for capacitor C97 - cut a notch out of the holder body
             translate([0, 0, -0.01])
                 rotate(a = -(a_holder_clip * 3)/2, v = [0, 0, 1])
                     rotate_extrude(angle = a_holder_clip * 3, convexity = 10) {
@@ -235,9 +236,21 @@ union() {
                             square([w_holder_walls + 0.02, h_holder_base + d_lead + 0.03]);
                     }
             // Make room for R99
-            translate([7.5, 8.3, -0.01])
-                cube([7.8, 2, h_holder_base + d_lead + (d_hole_tol / 2) + h_coincell], center = false);
+            translate([7.5, 8.3, -0.01]) {
+                h = h_holder_base + d_lead + h_coincell;
+                cube([7.8, 2, h + 0.02], center = false);
+            }
 
+        }
+    }
+
+    // Korg DM8000 fitment customization (adding parts of body to fit better)
+    // Make room for R99 - add a chamfer to the inside corner just removed.
+    translate([7.5, 8.3, 0]) {
+        h = h_holder_base + d_lead + h_coincell;
+        //cube([7.8, 2, h + 0.02], center = false);
+        linear_extrude(height = h, center = false, convexity = 10, twist = 0) {
+            polygon(points = [[0, 0], [0, 0.5], [0.5, 0]], convexity = 10);
         }
     }
 }
