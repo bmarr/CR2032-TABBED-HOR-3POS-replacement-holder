@@ -13,3 +13,5 @@ Skilled de-soldering and re-soldering is still required for this battery holder,
 Note: A paperclip with a wire diameter of about 0.7mm to 0.8mm is used with this battery holder as the battery contacts. The three battery holes on the PCB accept pins with about 0.8mm diameter. The paperclip is cut into two lengths which are then bent to fit within the channels of the battery holder to make the + and - contacts with the battery and act as the pins through the PCB. The + length of paperclip also acts as a retainer for the coin battery.
 
 !!! Solder the paperclips to the PCB without the holder in place, as the plastic will melt !!!
+
+DO NOT USE THE gcode FILE IN THIS REPOSITORY FOR PRINTING! It is specific to a custom printer design and is provided here only for reference.
