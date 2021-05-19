@@ -1,6 +1,8 @@
 # CR2032-TABBED-HOR-3POS-replacement-holder
 
-Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License
+Created in 2020 Braden Marr
+
+This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License
 https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 This is a replacement battery holder originally intended for the 3V battery inside the 1985-1987 Korg DW-8000 synthesizer keyboard, though it will likely work as a replacement in other PCB designs that used the 3 pin welded coin battery. This battery holder allows for easier swaps of common CR2032 3V lithium coin batteries. It requires a small paperclip cut into two lengths to act as the pins and pressure contacts of the battery holder.
